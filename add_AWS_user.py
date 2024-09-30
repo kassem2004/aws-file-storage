@@ -16,5 +16,5 @@ def create_iam_user(username):
     iam.attach_user_policy(UserName=username, PolicyArn=policy_arn)
     
 if __name__ == "__main__":
-    
-    create_iam_user("Testing1")
+    username = input("Enter the username you would like to add: ")
+    create_iam_user(username=username)
