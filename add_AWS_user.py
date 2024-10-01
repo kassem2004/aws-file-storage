@@ -4,7 +4,7 @@ import os
 session = boto3.Session(
     aws_access_key_id=os.getenv("Kassem-AWS-accesskey"),
     aws_secret_access_key=os.getenv("Kassem-AWS-secretaccesskey"),
-    region_name="me-central-1"
+    region_name="us-east-1"
 )
 
 iam = session.client('iam')
