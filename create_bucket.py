@@ -9,17 +9,10 @@ session = boto3.Session(
 
 s3 = session.client('s3')
 
-def create_bucket(bucket_name):
+def create_bucket(bucket_name, key_id):
     session_region =  session.region_name
-
-    if session_region == 'us-east-1':
-        s3.create_bucket(Bucket=bucket_name)
-    else :
-        s3.create_bucket(Bucket=bucket_name,
-                     CreateBucketConfiguration={
-                     'LocationConstraint': 'us-east-1'
-                     }
-                     )
+        
+    s3.create_bucket(Bucket=bucket_name)
 
     s3.put_bucket_versioning(
         Bucket=bucket_name,
@@ -34,7 +27,8 @@ def create_bucket(bucket_name):
             'Rules': [
                 {
                     'ApplyServerSideEncryptionByDefault': {
-                        'SSEAlgorithm': 'AES256'
+                        'SSEAlgorithm': 'aws:kms',
+                        'KMSMasterKeyID': 'key_id'
                     }
                 }
             ]
@@ -44,5 +38,6 @@ def create_bucket(bucket_name):
 
 if __name__ == "__main__":
     bucket_name = input("Enter the S3 bucket name: ")
+    key_id = os.getenv('KMS-first-key-arn')
 
-    create_bucket(bucket_name=bucket_name)
+    create_bucket(bucket_name=bucket_name, key_id=key_id)
